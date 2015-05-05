@@ -91,6 +91,25 @@ describe('method addUrl', function () {
 
     });
 
+    describe('video arg', function () {
+
+        it('should video tag', function () {
+            var sm = new Sitemap();
+            sm.addUrl({
+                url: 'http://test.com',
+                video: {
+                    title: 'Grilling steaks for summer',
+                    description: 'Alkis shows you how to get perfectly done steaks every time',
+                    thumbnail_loc: 'http://www.example.com/thumbs/123.jpg',
+                    content_loc: 'http://www.example.com/video123.flv'
+                }
+            });
+            var result = sm.toXML()[0].xml;
+            result.should.equal(dataExpected['video.xml']);
+        });
+
+    });
+
     describe('invalid arguments', function () {
 
         var sitemap;
@@ -130,6 +149,26 @@ describe('method addUrl', function () {
             expect(sitemap.addUrl.bind(sitemap, withoutProtocol.url)).to.throw(errors.NoURLProtocolError);
             expect(sitemap.addUrl.bind(sitemap, withoutProtocol)).to.throw(errors.NoURLProtocolError);
             expect(sitemap.addUrl.bind(sitemap, [withoutProtocol])).to.throw(errors.NoURLProtocolError);
+        });
+
+        it('should throw VideoNoRequiredFieldsError', function () {
+            var fn = sitemap.addUrl.bind(sitemap, {url: 'http://test.com', video: {}});
+            expect(fn).to.throw(errors.VideoNoRequiredFieldsError);
+
+            fn = sitemap.addUrl.bind(sitemap, {url: 'http://test.com', video: {title: 'lalala'}});
+            expect(fn).to.throw(errors.VideoNoRequiredFieldsError);
+
+            fn = sitemap.addUrl.bind(sitemap, {
+                url: 'http://test.com',
+                video: {
+                    title: 'Grilling steaks for summer',
+                    description: 'Alkis shows you how to get perfectly done steaks every time',
+                    thumbnail_loc: 'http://www.example.com/thumbs/123.jpg',
+                    content_loc: 'http://www.example.com/video123.flv'
+                }
+            });
+            expect(fn).not.to.throw(errors.VideoNoRequiredFieldsError);
+
         });
 
     });

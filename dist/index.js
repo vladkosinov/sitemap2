@@ -101,6 +101,9 @@ var Sitemap = (function () {
             if (urlData.lastmod || urlData.lastmodISO) {
                 data.lastmod = _utils.validateLastMod(urlData.lastmod, urlData.lastmodISO);
             }
+            if (urlData.video) {
+                data.video = _utils.validateVideo(urlData.video);
+            }
 
             this.urls.push(data);
             return this;
@@ -170,6 +173,7 @@ var Sitemap = (function () {
             var urls = sitemap.urls;
             var urlset = _xmlbuilder2['default'].create('urlset');
             urlset.att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+
             urls.forEach(function (url) {
                 var urlEl = urlset.ele('url');
                 urlEl.ele('loc', {}, url.url);
@@ -177,6 +181,15 @@ var Sitemap = (function () {
                 urlEl.ele('priority', {}, url.priority);
                 if (url.lastmod) {
                     urlEl.ele('lastmod', {}, url.lastmod);
+                }
+                if (url.video) {
+                    (function () {
+                        urlset.att('xmlns:video', 'http://www.google.com/schemas/sitemap-video/1.1');
+                        var video = urlEl.ele('video:video');
+                        Object.keys(url.video).forEach(function (key) {
+                            video.ele('video:' + key, {}, url.video[key]);
+                        });
+                    })();
                 }
             });
 
