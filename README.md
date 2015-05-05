@@ -17,7 +17,7 @@ It will produce 3 files: sitemap.xml (index xml file), sitemap-0.xml(movies link
 
 ```js
 var fs = require('fs');
-var Sitemap = require('./dist');
+var Sitemap = require('sitemap2');
 
 var host = 'http://vk.com';
 
