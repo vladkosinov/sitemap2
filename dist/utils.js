@@ -18,6 +18,7 @@ exports.validateChangeFreq = validateChangeFreq;
 exports.validateURL = validateURL;
 exports.validatePriority = validatePriority;
 exports.validateLastMod = validateLastMod;
+exports.validateVideo = validateVideo;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -83,4 +84,18 @@ function validateLastMod(lastmod) {
     var timezoneOffset = 'UTC-' + new Date().getTimezoneOffset() / 60 + '00';
     var dt = new Date(lastmod + ' ' + timezoneOffset);
     return [dt.getFullYear(), lpad(dt.getMonth() + 1, 2), lpad(dt.getDate(), 2)].join('-');
+}
+
+var VIDEO_REQUIRED_FIELDS = ['title', 'description', 'thumbnail_loc', 'content_loc'];
+exports.VIDEO_REQUIRED_FIELDS = VIDEO_REQUIRED_FIELDS;
+
+function validateVideo(videoTag) {
+
+    var requiredFieldsExist = VIDEO_REQUIRED_FIELDS.every(function (e) {
+        return videoTag[e];
+    });
+    if (!requiredFieldsExist) {
+        throw new _errors.VideoNoRequiredFieldsError();
+    }
+    return videoTag;
 }
