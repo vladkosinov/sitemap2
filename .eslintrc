@@ -1,0 +1,18 @@
+{
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "classes": true,
+    "defaultParams": true,
+    "modules": true
+  },
+  "rules": {
+    "semi": 2,
+    "quotes": [2, "single"],
+    "no-underscore-dangle": false
+  },
+  "env": {
+    "node": true,
+    "es6": true
+  }
+}

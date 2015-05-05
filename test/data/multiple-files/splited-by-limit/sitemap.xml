@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>http://google.com/sitemap-0-0.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://google.com/sitemap-0-1.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://google.com/sitemap-0-2.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://google.com/sitemap-0-3.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://google.com/sitemap-0-4.xml</loc>
+  </sitemap>
+</sitemapindex>

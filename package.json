@@ -1,0 +1,38 @@
+{
+  "name": "sitemap2",
+  "version": "0.1.0",
+  "description": "Sitemap-generating framework",
+  "keywords": [
+    "sitemap",
+    "sitemap.xml",
+    "nested sitemaps"
+  ],
+  "repository": "git@github.com:vlkosinov/sitemap2.git",
+  "author": "Vlad Kosinov <vladkosinov@gmail.com>",
+  "dependencies": {
+    "xmlbuilder": "^2.6.2"
+  },
+  "devDependencies": {
+    "babel": "^5.1.13",
+    "chai": "*",
+    "coveralls": "^2.11.2",
+    "fs-readdir-recursive": "^0.1.1",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.1.0",
+    "gulp-bump": "^0.3.0",
+    "gulp-eslint": "^0.11.1",
+    "gulp-filter": "^2.0.2",
+    "gulp-git": "^1.2.1",
+    "gulp-mocha": "^2.0.1",
+    "gulp-tag-version": "^1.2.1",
+    "isparta": "^3.0.3",
+    "mocha": "*",
+    "mocha-lcov-reporter": "0.0.2",
+    "through2": "^0.6.5"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "TEST_TARGET=dist mocha",
+    "coverage": "TEST_TARGET=lib babel-node node_modules/.bin/isparta cover node_modules/.bin/_mocha --compilers js:babel/register && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+  }
+}
