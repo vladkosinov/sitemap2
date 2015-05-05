@@ -18,45 +18,27 @@ var _utils = require('./utils');
 
 var _errorsJs = require('./errors.js');
 
-function _transformSitemapsTreeToList(_x2) {
-    var _arguments = arguments;
+function _reduceSitemapsTreeToList(_x, _x2) {
     var _again = true;
 
     _function: while (_again) {
-        result = nestedSitemaps = undefined;
+        nestedSitemaps = undefined;
         _again = false;
-        var sitemaps = _x2;
-        var result = _arguments[1] === undefined ? [] : _arguments[1];
+        var result = _x,
+            sitemaps = _x2;
 
-        if (!Array.isArray(sitemaps)) {
-            if (sitemaps.urls.length) {
-                result.push(sitemaps);
-            }
-            sitemaps.sitemaps.forEach(function (sm) {
-                return result.push(sm);
-            });
-            _arguments = [_x2 = sitemaps.sitemaps, result];
-            _again = true;
-            continue _function;
-        }
-
-        var nestedSitemaps = [];
-        sitemaps.forEach(function (sm) {
-            sm.sitemaps.forEach(function (nestedSm) {
-                nestedSitemaps.push(nestedSm);
-            });
-        });
+        var nestedSitemaps = sitemaps.reduce(function (sum, sm) {
+            return sum.concat(sm.childrens);
+        }, []);
 
         if (!nestedSitemaps.length) {
             return result;
+        } else {
+            _x = result.concat(nestedSitemaps);
+            _x2 = nestedSitemaps;
+            _again = true;
+            continue _function;
         }
-        nestedSitemaps.forEach(function (sm) {
-            return result.push(sm);
-        });
-
-        _arguments = [_x2 = nestedSitemaps, result];
-        _again = true;
-        continue _function;
     }
 }
 
@@ -71,7 +53,7 @@ var Sitemap = (function () {
         this.hostName = conf.hostName || '';
         this.fileName = conf.fileName || '';
         this.urls = conf.urls || [];
-        this.sitemaps = conf.sitemaps || [];
+        this.childrens = conf.childrens || [];
     }
 
     _createClass(Sitemap, [{
@@ -111,14 +93,16 @@ var Sitemap = (function () {
     }, {
         key: 'addSitemap',
         value: function addSitemap(sitemap) {
-            this.sitemaps.push(sitemap);
+            this.childrens.push(sitemap);
             return this;
         }
     }, {
         key: 'toXML',
         value: function toXML() {
 
-            var sitemapsList = _transformSitemapsTreeToList(this).map(Sitemap._setFileNameIfNotExist).reduce(Sitemap._normalizeSize, []);
+            var sitemapsList = _reduceSitemapsTreeToList([this].concat(this.childrens), this.childrens).filter(function (sm) {
+                return sm.urls.length;
+            }).map(Sitemap._setFileNameIfNotExist).reduce(Sitemap._normalizeSize, []);
 
             var result = sitemapsList.map(Sitemap._toXMLWithUrls);
 
@@ -148,12 +132,12 @@ var Sitemap = (function () {
                 var surrogate = new Sitemap(sitemap);
                 surrogate.urls = urls;
                 surrogate.fileName = surrogate.fileName.replace(/(\.xml$|$)/, '-' + i + '$1');
-                surrogate.sitemaps = [];
+                surrogate.childrens = [];
                 return surrogate;
             });
 
             //we should save nested sitemaps only for one of chunked sitemaps
-            chunkedSitemaps[0].sitemaps = sitemap.sitemaps;
+            chunkedSitemaps[0].childrens = sitemap.childrens;
             chunkedSitemaps.forEach(function (sm) {
                 return result.push(sm);
             });
