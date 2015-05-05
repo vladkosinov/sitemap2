@@ -67,11 +67,11 @@ describe('method addUrl', function () {
             sitemap.addUrl('http://google.com/page1');
         });
 
-        it('should accept url as object ', function () {
+        it('should accept url as object', function () {
             sitemap.addUrl({url: 'http://google.com/page1'});
         });
 
-        it('should accept url as array of strings ', function () {
+        it('should accept url as array of strings', function () {
             sitemap.addUrl(['http://google.com/page1']);
         });
 
@@ -221,4 +221,29 @@ describe('toXML()', function () {
 
     });
 
+});
+
+describe('example from README', function () {
+    it('should work like a master', function () {
+        var host = 'http://vk.com';
+
+        var sm = new Sitemap({hostName: host});
+
+        var movies = new Sitemap({hostName: host});
+        movies.addUrl('http://vk.com/movies/video-1');
+        movies.addUrl('http://vk.com/movies/video-n');
+
+        var books = new Sitemap({hostName: host});
+        books.addUrl('http://vk.com/books/book-1');
+        books.addUrl('http://vk.com/books/book-n');
+
+        sm.addSitemap(movies);
+        sm.addSitemap(books);
+
+        var files = sm.toXML();
+
+        files.forEach(function eachShouldBeEqual(sm) {
+            sm.xml.should.equal(dataExpected['multiple-files']['from-readme'][sm.fileName]);
+        });
+    })
 });
