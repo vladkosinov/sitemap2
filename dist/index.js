@@ -10,6 +10,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+/**
+ * sitemap2 is a high-level sitemap-generating framework that makes creating sitemap XML files easy.
+ * https://github.com/vlkosinov/sitemap2
+ * @module sitemap2
+ * @exports Sitemap
+ */
+
 var _xmlbuilder = require('xmlbuilder');
 
 var _xmlbuilder2 = _interopRequireDefault(_xmlbuilder);
@@ -43,6 +50,32 @@ function _reduceSitemapsTreeToList(_x, _x2) {
 }
 
 var Sitemap = (function () {
+
+    /**
+     * Creates a new `Sitemap` instance
+     * @constructs Sitemap
+     * @param {Object} conf
+     *
+     * @param {String} conf.hostName
+     * Host name where this site sitemap will be placed.
+     * It will be used in `index sitemap` (link will be created by pattern: `${hostName}/${fileName}`).
+     * Required when using nested sitemaps or splitting by limit.
+     *
+     * @param {String} [conf.fileName=sitemap.xml]
+     * Used for generating `fileName` in result of `.toXML()`, for creating link to this sitemap for *index sitemap* .
+     *
+     * @param {Url[]} [conf.urls] - Array of url objects
+     * @param {String} conf.urls[].url - URL of the page
+     * @param {String} [conf.urls[].changefreq] - How frequently the page is likely to change: 'always'|'hourly'|'daily'|'weekly'|'monthly'|'yearly'|'never'
+     * @param {String} [conf.urls[]. priority=0.5] - The priority of this URL relative to other URLs on your site. Valid values range from 0.0 to 1.0
+     *
+     *
+     * var files = new Sitemap({fileName: 'my-pretty-sitemap.xml'})
+     *  .addUrl('http://vk.com/books/book-1')
+     *  .toXML() //--> [{ fileName: 'my-pretty-sitemap.xml', 'xml': '<?xml ... [bla-bla] ... >}]
+     *
+     */
+
     function Sitemap(conf) {
         _classCallCheck(this, Sitemap);
 
