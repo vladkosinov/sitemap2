@@ -132,24 +132,25 @@ var Sitemap = (function () {
     }, {
         key: 'toXML',
         value: function toXML() {
-
             var sitemapsList = _reduceSitemapsTreeToList([this].concat(this.childrens), this.childrens).filter(function (sm) {
-                return sm.urls.length;
+                return sm.urls.length || !sm.childrens.length;
             }).map(Sitemap._setFileNameIfNotExist).reduce(Sitemap._normalizeSize, []);
 
-            var result = sitemapsList.map(Sitemap._toXMLWithUrls);
+            var siteMapsWithUrls = sitemapsList.filter(function (sm) {
+                return sm.urls.length;
+            }).map(Sitemap._toXMLWithUrls);
 
             if (sitemapsList.length > 1) {
                 var sitemapIndexXML = _xmlbuilder2['default'].create('sitemapindex');
                 sitemapIndexXML.att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
                 Sitemap._fillSitemapElement(sitemapIndexXML, sitemapsList);
-                result.unshift({
+                siteMapsWithUrls.unshift({
                     fileName: 'sitemap.xml',
                     xml: sitemapIndexXML.end({ pretty: true })
                 });
             }
 
-            return result;
+            return siteMapsWithUrls;
         }
     }], [{
         key: '_normalizeSize',

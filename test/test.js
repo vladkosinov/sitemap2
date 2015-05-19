@@ -231,6 +231,22 @@ describe('toXML()', function () {
 
     });
 
+    it('should add links to `empty` sitemaps into index sitemap', function () {
+        var index = new Sitemap({hostName: 'http://google.com'});
+
+        for (var i = 0; i < 100; i++) {
+            index.addSitemap(new Sitemap({
+                fileName: 'sitemap-' + i + '.xml',
+                hostName: 'http://google.com'
+            }));
+        }
+
+        var files = index.toXML();
+        files.length.should.be.eql(1);
+
+        files[0].xml.should.equal(dataExpected['only-links-to-sitemaps.xml']);
+    });
+
 });
 
 describe('example from README', function () {
