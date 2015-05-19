@@ -231,6 +231,33 @@ describe('toXML()', function () {
 
     });
 
+    it('should generate index sitemap with links to `empty` and `nested` sitemaps', function () {
+        var index = new Sitemap({hostName: 'http://google.com'});
+
+        var sm1 = new Sitemap({hostName: hostName, fileName: 'bla-bla.xml'});
+        sm1.addUrl('http://google.com/1/2/page-1');
+        sm1.addUrl('http://google.com/1/2/page-2');
+
+        index.addSitemap(sm1);
+
+        for (var i = 0; i < 100; i++) {
+            index.addSitemap(new Sitemap({
+                fileName: 'sitemap-' + i + '.xml',
+                hostName: 'http://google.com'
+            }));
+        }
+
+        var files = index.toXML();
+        var filesExpectedCount = Object.keys(dataExpected['multiple-files']['empty-with-nested']).length;
+        files.length.should.be.eql(filesExpectedCount);
+
+
+        files.forEach(function eachShouldBeEqual(sm) {
+            sm.xml.should.equal(dataExpected['multiple-files']['empty-with-nested'][sm.fileName]);
+        });
+
+    });
+
     it('should add links to `empty` sitemaps into index sitemap', function () {
         var index = new Sitemap({hostName: 'http://google.com'});
 
