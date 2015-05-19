@@ -189,7 +189,12 @@ describe('toXML()', function () {
             sm.addUrl(path.join(hostName, i + ''));
         }
 
-        sm.toXML().forEach(function eachShouldBeEqual(sm) {
+        var files = sm.toXML();
+
+        var filesExpectedCount = Object.keys(dataExpected['multiple-files']['splited-by-limit']).length;
+        files.length.should.be.eql(filesExpectedCount);
+
+        files.forEach(function eachShouldBeEqual(sm) {
             sm.xml.should.equal(dataExpected['multiple-files']['splited-by-limit'][sm.fileName]);
         });
 
@@ -215,7 +220,12 @@ describe('toXML()', function () {
         sm1.addSitemap(sm3);
         sm2.addSitemap(sm4);
 
-        sm1.toXML().forEach(function eachShouldBeEqual(sm) {
+        var files = sm1.toXML();
+        
+        var filesExpectedCount = Object.keys(dataExpected['multiple-files']['horizontal-structure']).length;
+        files.length.should.be.eql(filesExpectedCount);
+        
+        files.forEach(function eachShouldBeEqual(sm) {
             sm.xml.should.equal(dataExpected['multiple-files']['horizontal-structure'][sm.fileName]);
         });
 
@@ -241,6 +251,9 @@ describe('example from README', function () {
         sm.addSitemap(books);
 
         var files = sm.toXML();
+
+        var filesExpectedCount = Object.keys(dataExpected['multiple-files']['from-readme']).length;
+        files.length.should.be.eql(filesExpectedCount);
 
         files.forEach(function eachShouldBeEqual(sm) {
             sm.xml.should.equal(dataExpected['multiple-files']['from-readme'][sm.fileName]);
