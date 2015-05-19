@@ -24,7 +24,7 @@ function setValueByPathInObject(value, path, obj) {
     setValueByPathInObject(value, path, obj[currentPathPart]);
 }
 
-var dataDir = path.join(__dirname, './data');
+var dataDir = path.join(__dirname, './fixtures');
 var dataExpected = readDir(dataDir).reduce(function (res, fileName) {
     setValueByPathInObject(fs.readFileSync(path.join(dataDir, fileName)).toString(), fileName.split('/'), res);
     return res;
